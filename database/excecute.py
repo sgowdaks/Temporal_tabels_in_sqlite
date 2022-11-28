@@ -65,11 +65,13 @@ class execute:
         # self.con.close()
 
     def insert(self, query, bo = False):
+        if bo == True:
+            print("hello")
         query = query.split("(")
         tabel_name = query[0].split(" ")[2]
-        second = query[1].strip(")").strip('"').split(",")
+        second = query[1].strip(")").strip('"').strip(" ").split(",")
+        
 
-        val = second[self.index]
         n = len(second)
         question = ""
         tup = []
@@ -80,14 +82,17 @@ class execute:
                 tup.append(eval(second[i]))
             else:
                 question += ", ?"
-                tup.append(eval(second[i]))
+                if i == n - 1:
+                   tup.append(second[i])
+                else:
+                    tup.append(eval(second[i]))
             if i == n-1:
                 extra = second[i]
         if bo == False:
             question += ", ?"
             today = date.today()
             d1 = today.strftime("%d/%m/%Y")
-            tup.append(extra +":" + d1 + " ,")
+            tup.append(extra +":" + d1 + "|")
         str_ = "INSERT INTO " + tabel_name + " VALUES (" + question + ")" 
         self.con.execute(str_, tuple(tup))
         self.cur.commit()
@@ -136,11 +141,11 @@ class execute:
                 
         if target in dicti1.keys():
             #the main key is modified
-            keys1 += ", " + target_update + " = " +  target_update + " || ? "
+            keys1 += ", " + target_update + " = " +  target_update + "|| ?"
             q = "UPDATE " + query[2] + " SET " + keys1 + " WHERE " + keys2 
             new = str(dicti1['salary'])
             today = date.today()
-            new = new + ":" + str(today.strftime("%d/%m/%Y")) + ","
+            new = new + ":" + str(today.strftime("%d/%m/%Y")) + "|"
             list1.insert(len(dicti1), new)
             print(q, tuple(list1))
             self.con.execute(q, tuple(list1))
@@ -151,7 +156,7 @@ class execute:
             self.con.execute(q, tuple(list1))
 
         self.cur.commit()
-        self.cur.close()
+        # self.cur.close()
         
     def delete(self, query):
         #delete the key
@@ -190,7 +195,7 @@ class execute:
         q = "DELETE FROM " + tabel_name + " WHERE " + keys1 
         cur.execute(q, tuple(list1))
         self.cur.commit()
-        self.cur.close()
+        # self.cur.close()
 
     def insert_into_extra_database(self, q, vals, tabel_name):
         extra_tabel_name = tabel_name + "_extra"
@@ -212,8 +217,8 @@ class execute:
 k = execute("CREATE TABLE users (userId text primary key, name text, email text, salary text save)", cur, con)
 k = execute("INSERT INTO users VALUES (1, 'sherry', 'sks@lion.lmu.edu', 1000)", cur, con)
 k = execute("INSERT INTO users VALUES (2, 'shivani', 's@lion.lmu.edu', 2000)", cur, con)        
-#k = execute("UPDATE INTO users SET salary = 2000, name = 'TG' WHERE email = 'sks@lion.lmu.edu'", cur, con)
-#k = execute("UPDATE INTO users SET salary = 3000 WHERE email = 'sks@lion.lmu.edu'", cur, con)
+k = execute("UPDATE INTO users SET salary = 2000, name = 'TG' WHERE email = 'sks@lion.lmu.edu'", cur, con)
+k = execute("UPDATE INTO users SET salary = 3000 WHERE email = 'sks@lion.lmu.edu'", cur, con)
 k = execute("DELETE FROM users WHERE email = 'sks@lion.lmu.edu'", cur, con) 
 
 
