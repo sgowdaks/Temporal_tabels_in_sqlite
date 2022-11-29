@@ -1,5 +1,4 @@
 import sqlite3
-import re
 
 con = sqlite3.connect('details.db')
 cur = con.cursor()

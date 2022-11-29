@@ -1,8 +1,3 @@
-import sqlite3
-
-con = sqlite3.connect('user_details.db')
-cur = con.cursor()
-
 from datetime import date
 
 class execute:
@@ -96,7 +91,7 @@ class execute:
     def update(self, query):
         query = query.split(" ")
         q = "select * from " + query[2]
-        cursor = con.execute(q)
+        cursor = self.con.execute(q)
         names = list(map(lambda x: x[0], cursor.description))
         target = names[-2]
         target_update = names[-1]
@@ -180,16 +175,16 @@ class execute:
         self.insert_into_extra_database(q, list1, tabel_name)
 
         q = "DELETE FROM " + tabel_name + " WHERE " + keys1 
-        cur.execute(q, tuple(list1))
+        self.cur.execute(q, tuple(list1))
         self.cur.commit()
         # self.cur.close()
 
     def insert_into_extra_database(self, q, vals, tabel_name):
         extra_tabel_name = tabel_name + "_extra"
-        cur.execute(q, tuple(vals))
-        con.commit()
-        rows = cur.fetchall()
-        one = cur.fetchone()
+        self.cur.execute(q, tuple(vals))
+        self.cur.commit()
+        rows = self.cur.fetchall()
+        one = self.cur.fetchone()
         query = "INSERT INTO " + extra_tabel_name + " VALUES " 
         list1 = []
         for row in rows:
@@ -200,13 +195,6 @@ class execute:
             self.insert(query, True)
             
     # def view(self, query):
-        
-k = execute("CREATE TABLE users (userId text primary key, name text, email text, salary text save)", cur, con)
-k = execute("INSERT INTO users VALUES (1, 'sherry', 'sks@lion.lmu.edu', 1000)", cur, con)
-k = execute("INSERT INTO users VALUES (2, 'shivani', 's@lion.lmu.edu', 2000)", cur, con)        
-k = execute("UPDATE INTO users SET salary = 2000, name = 'TG' WHERE email = 'sks@lion.lmu.edu'", cur, con)
-k = execute("UPDATE INTO users SET salary = 3000 WHERE email = 'sks@lion.lmu.edu'", cur, con)
-k = execute("DELETE FROM users WHERE email = 'sks@lion.lmu.edu'", cur, con) 
 
 
 
