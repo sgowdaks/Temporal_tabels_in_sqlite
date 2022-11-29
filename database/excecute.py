@@ -27,9 +27,6 @@ class execute:
         elif "UPDATE" in query_:
             self.update(query)
         
-        # elif "SELECT" in query:
-        #     self.select(query_)
-
         elif "DELETE" in query_:
             self.delete(query_)
 
@@ -37,7 +34,6 @@ class execute:
         #     self.view(query_)
 
     def create(self, query):
-        #query = "CREATE TABLE users (userId text primary key, name text, email text, salary text save)"
         query_brackets = query.split("(")
         first_part = query_brackets[0]
         second_part = query_brackets[1]
@@ -98,8 +94,6 @@ class execute:
         self.cur.commit()
        
     def update(self, query):
-        # cur.execute("UPDATE users set salary = ? WHERE email=?", (int(amount), email))
-        #"UPDATE INTO users set salary = 2000 WHERE email='sks@lion.lmu.edu')"
         query = query.split(" ")
         q = "select * from " + query[2]
         cursor = con.execute(q)
@@ -107,7 +101,6 @@ class execute:
         target = names[-2]
         target_update = names[-1]
 
-        #if there are updating last to second column
         where  = query.index("WHERE")
         set_ = query.index("SET")
         set_part = query[set_+ 1: where]
@@ -140,7 +133,6 @@ class execute:
         dicti2, keys2, list1 = make_dicti(dicti2, where_part, list1)
                 
         if target in dicti1.keys():
-            #the main key is modified
             keys1 += ", " + target_update + " = " +  target_update + "|| ?"
             q = "UPDATE " + query[2] + " SET " + keys1 + " WHERE " + keys2 
             new = str(dicti1['salary'])
@@ -149,9 +141,7 @@ class execute:
             list1.insert(len(dicti1), new)
             print(q, tuple(list1))
             self.con.execute(q, tuple(list1))
-
         else: 
-            #the main key is not modified
             q = "UPDATE " + query[2] + " SET " + keys1 + " WHERE " + keys2 
             self.con.execute(q, tuple(list1))
 
@@ -159,9 +149,6 @@ class execute:
         # self.cur.close()
         
     def delete(self, query):
-        #delete the key
-        #DELETE FROM users WHERE email='sks@lion.lmu.edu')"
-        #cur.execute("DELETE FROM users WHERE email=?", (int(amount),))
         tabel_name = query[2]
         where  = query.index("WHERE")
         where_part = query[where+1:]
