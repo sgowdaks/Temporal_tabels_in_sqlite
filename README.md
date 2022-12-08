@@ -8,11 +8,11 @@ Implementing temporal tabels in sqlite
 
 ### Things to note:
 * The project is in the primitive state, and only work for CREATE, INSERT, UPDATE and DELETE. You have to follow the exact syntax as listed below 
-  * 
-    * CREATE: Database("CREATE TABLE users (userId text primary key, name text, email text, salary text save)")
-  * INSERT: Database("INSERT INTO users VALUES (1, 'sherry', 'sks@lion', 1000)")
-  * UPDATE: Database("UPDATE INTO users SET salary = 2000, name = 'sherry' WHERE email = 'sks@lion'")
-  * DELETE: Database("DELETE FROM users WHERE email = 'sks@lion'")
+  * The feild that you want to update should be placed at the end and should be given a special key name `save`. Ex: `CREATE: Database("CREATE TABLE users (userId text primary key, name text, email text, salary text save)")`. All the other queries follows the normal syntax. Example:
+   * INSERT: Database("INSERT INTO users VALUES (1, 'sherry', 'sks@lion', 1000)")
+   * UPDATE: Database("UPDATE INTO users SET salary = 2000, name = 'sherry' WHERE email = 'sks@lion'")
+   * DELETE: Database("DELETE FROM users WHERE email = 'sks@lion'")
+ * This does not work for complex queries like queries inside the queries. 
   
  
 
